@@ -1,0 +1,567 @@
+<main class="main">
+  <div class="container">
+    <div class="header">
+      <div>
+        <div
+          class="photo-upload"
+          (click)="triggerPhotoUpload()"
+          style="cursor: pointer; user-select: none"
+        >
+          <div>📸</div>
+          <div>Click to upload personal image</div>
+        </div>
+        <div *ngIf="photoPreview">
+          <img
+            [src]="photoPreview"
+            alt="Personal photo preview"
+            style="max-width: 150px; max-height: 150px; border-radius: 8px"
+          />
+        </div>
+      </div>
+
+      <h1>Employee Bio Data</h1>
+
+      <!-- Hidden file input for photo upload -->
+      <input
+        type="file"
+        accept="image/*"
+        #photoInput
+        hidden
+        (change)="onPhotoSelected($event)"
+      />
+
+      <!-- Optional: Preview -->
+    </div>
+
+    <form class="form-content" [formGroup]="bioForm" (ngSubmit)="onSubmit()">
+      <!-- Left Column -->
+      <div class="left-column">
+        <div class="section">
+          <div class="form-group">
+            <label for="name-english"
+              >Name(English): <span class="required">*</span></label
+            >
+            <div class="input-icon">
+              <input
+                formControlName="nameEnglish"
+                placeholder="Employee Name"
+                required
+                type="text"
+                id="name-english"
+              />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="dob"
+                >Date of Birth: <span class="required">*</span></label
+              >
+              <input id="dob" type="date" formControlName="dob" required />
+            </div>
+            <div class="form-group">
+              <label for="gender">Gender:</label>
+              <select id="gender">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="blood-group">Blood Group:</label>
+            <select id="blood-group" formControlName="bloodGroup">
+              <option value="A+">A+</option>
+              <option value="A-">A-</option>
+              <option value="B+">B+</option>
+              <option value="B-">B-</option>
+              <option value="AB+">AB+</option>
+              <option value="AB-">AB-</option>
+              <option value="O+">O+</option>
+              <option value="O-">O-</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="qualification"
+              >Last Qualification: <span class="required">*</span></label
+            >
+            <div class="input-icon education">
+              <input
+                type="text"
+                id="qualification"
+                placeholder="Educational Qualification"
+                required
+                formControlName="qualification"
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="skills">Key Skills:</label>
+            <div class="input-icon skills">
+              <textarea
+                id="skills"
+                placeholder="Key Skills"
+                formControlName="skills"
+              ></textarea>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email:</label>
+            <div class="input-icon email">
+              <input
+                type="email"
+                id="email"
+                placeholder="Email"
+                formControlName="email"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="marital-status"
+                >Marital Status: <span class="required">*</span></label
+              >
+              <select
+                id="marital-status"
+                required
+                formControlName="maritalStatus"
+              >
+                <option value="">-- Select --</option>
+                <option value="single">Single</option>
+                <option value="married">Married</option>
+                <option value="divorced">Divorced</option>
+                <option value="widowed">Widowed</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="father-name"
+                >Father's Name: <span class="required">*</span></label
+              >
+              <input
+                type="text"
+                id="father-name"
+                placeholder="Father's Name"
+                required
+                formControlName="fatherName"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="bank-name">Bank Name:</label>
+              <div class="input-icon bank">
+                <input
+                  type="text"
+                  id="bank-name"
+                  placeholder="Bank Name"
+                  formControlName="bankName"
+                />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="account-number">Account Number:</label>
+              <input
+                type="text"
+                id="account-number"
+                placeholder="Bank Account"
+                formControlName="accountNumber"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="reference">Reference:</label>
+              <input
+                type="text"
+                id="reference"
+                placeholder="Reference Name"
+                formControlName="reference"
+              />
+            </div>
+            <div class="form-group">
+              <label for="ref-phone">Phone Number:</label>
+              <div class="input-icon phone">
+                <input
+                  type="tel"
+                  id="ref-phone"
+                  placeholder="Reference No"
+                  formControlName="refPhone"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="form-group">
+            <label for="present-address">Present Address:</label>
+            <textarea
+              id="present-address"
+              placeholder="Present Address"
+              formControlName="presentAddress"
+            ></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="district"
+              >District: <span class="required">*</span></label
+            >
+            <select id="district" required formControlName="district">
+              <option value="">Select District</option>
+              <option value="dhaka">Dhaka</option>
+              <option value="chittagong">Chittagong</option>
+              <option value="sylhet">Sylhet</option>
+              <option value="rajshahi">Rajshahi</option>
+              <option value="khulna">Khulna</option>
+              <option value="barisal">Barisal</option>
+              <option value="rangpur">Rangpur</option>
+              <option value="mymensingh">Mymensingh</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column -->
+      <div class="right-column">
+        <div class="section">
+          <h3 class="section-title basic-info">Basic Info:</h3>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="name-bangla">Name (Bangla):</label>
+              <div class="input-icon">
+                <input
+                  type="text"
+                  id="name-bangla"
+                  placeholder="Employee Bangla Name"
+                  formControlName="nameBangla"
+                />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="age">Age: <span class="required">*</span></label>
+              <input
+                type="number"
+                id="age"
+                placeholder="0"
+                required
+                formControlName="age"
+              />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="religion">Religion:</label>
+              <select id="religion" formControlName="religion">
+                <option value="islam">Islam</option>
+                <option value="hinduism">Hinduism</option>
+                <option value="christianity">Christianity</option>
+                <option value="buddhism">Buddhism</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="phone"
+                >Phone Number: <span class="required">*</span></label
+              >
+              <div class="input-icon phone">
+                <input
+                  type="tel"
+                  id="phone"
+                  placeholder="Mobile No"
+                  required
+                  formControlName="phone"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="official-number">Official Number:</label>
+              <div class="input-icon phone">
+                <input
+                  type="tel"
+                  id="official-number"
+                  placeholder="Official No"
+                  formControlName="officialNumber"
+                />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="last-job">Last Job Place:</label>
+              <input
+                type="text"
+                id="last-job"
+                placeholder="Last Job Place"
+                formControlName="lastJob"
+              />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="linkedin">LinkedIn:</label>
+              <div class="input-icon linkedin">
+                <input
+                  type="text"
+                  id="linkedin"
+                  placeholder="LinkedIn"
+                  formControlName="linkedin"
+                />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="facebook">Facebook:</label>
+              <div class="input-icon facebook">
+                <input
+                  type="text"
+                  id="facebook"
+                  placeholder="Facebook Id"
+                  formControlName="facebook"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="nid">NID No: <span class="required">*</span></label>
+            <input
+              type="text"
+              id="nid"
+              placeholder="National Id"
+              required
+              formControlName="nid"
+            />
+          </div>
+        </div>
+
+        <div class="section">
+          <h3 class="section-title family-info">Family Info:</h3>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="guardian-type"
+                >Guardian Type: <span class="required">*</span></label
+              >
+              <select
+                id="guardian-type"
+                required
+                formControlName="guardianType"
+              >
+                <option value="father">Father</option>
+                <option value="mother">Mother</option>
+                <option value="spouse">Spouse</option>
+                <option value="guardian">Guardian</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="father-contact"
+                >Father's Contact: <span class="required">*</span></label
+              >
+              <div class="input-icon phone">
+                <input
+                  type="tel"
+                  id="father-contact"
+                  placeholder="Mobile No"
+                  required
+                  formControlName="fatherContact"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h3 class="section-title account-info">Account Info:</h3>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="branch-name">Branch Name:</label>
+              <input
+                type="text"
+                id="branch-name"
+                placeholder="Branch Name"
+                formControlName="branchName"
+              />
+            </div>
+            <div class="form-group">
+              <label for="tin">TIN No:</label>
+              <input
+                type="text"
+                id="tin"
+                placeholder="Tin Number"
+                formControlName="tin"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h3 class="section-title contact-info">Contact Info:</h3>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="public-rep">Public Representative:</label>
+              <input
+                type="text"
+                id="public-rep"
+                placeholder="Representative Name"
+                formControlName="publicRepresentative"
+              />
+            </div>
+            <div class="form-group">
+              <label for="contact-phone">Phone Number:</label>
+              <div class="input-icon phone">
+                <input
+                  type="tel"
+                  id="contact-phone"
+                  placeholder="Mobile No"
+                  formControlName="contactPhone"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="permanent-address">Permanent Address:</label>
+            <textarea
+              id="permanent-address"
+              placeholder="Permanent Address"
+              formControlName="permanentAddress"
+            ></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="police-station">Police Station:</label>
+              <input
+                type="text"
+                id="police-station"
+                placeholder="Thana Name"
+                formControlName="policeStation"
+              />
+            </div>
+            <div class="form-group">
+              <label for="postal-code">Postal Code:</label>
+              <input
+                type="text"
+                id="postal-code"
+                placeholder="Postal Code"
+                formControlName="postalCode"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h3 class="section-title nominee-info">Nominee Info:</h3>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="nominee-name"
+                >Name: <span class="required">*</span></label
+              >
+              <input
+                type="text"
+                id="nominee-name"
+                placeholder="Nominee Name"
+                required
+                formControlName="nomineeName"
+              />
+            </div>
+            <div class="form-group">
+              <label for="relationship">Relationship:</label>
+              <input
+                type="text"
+                id="relationship"
+                placeholder="Nominee Relationship"
+                formControlName="nomineeRelationship"
+              />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="nominee-mobile"
+                >Mobile Number: <span class="required">*</span></label
+              >
+              <div class="input-icon phone">
+                <input
+                  type="tel"
+                  id="nominee-mobile"
+                  placeholder="Mobile No"
+                  required
+                  formControlName="nomineeMobile"
+                />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="nominee-nid"
+                >Nid: <span class="required">*</span></label
+              >
+              <input
+                type="text"
+                id="nominee-nid"
+                placeholder="Nid Number"
+                required
+                formControlName="nomineeNid"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="buttons">
+        <!-- Hidden file input for Personal File -->
+        <input
+          type="file"
+          id="personalFile"
+          formControlName="personalFile"
+          hidden
+          (change)="onFileChange($event, 'personalFile')"
+        />
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="triggerPersonalFileInput()"
+        >
+          📎 File Attachment Personal
+        </button>
+
+        <!-- Hidden file input for Nominee File -->
+        <input
+          type="file"
+          id="nomineeFile"
+          formControlName="nomineeFile"
+          hidden
+          (change)="onFileChange($event, 'nomineeFile')"
+        />
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="triggerNomineeFileInput()"
+        >
+          📎 File Attachment Nominee
+        </button>
+
+        <!-- Submit button -->
+        <button type="submit" class="btn btn-success">✅ Save</button>
+      </div>
+    </form>
+  </div>
+</main>
