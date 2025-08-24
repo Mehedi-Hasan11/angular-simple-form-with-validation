@@ -150,10 +150,11 @@ input:focus, textarea:focus {
 }
 
 /* Buttons */
-.actions { display: flex; gap: 10px; flex-wrap: wrap;justify-content: center; }
+.actions { display: flex; gap: 30px; flex-wrap: wrap;justify-content: center; }
 .btn {
   border: none;
   padding: 10px 14px;
+  margin-right: 30px;
   border-radius: 12px;
   cursor: pointer;
   font-weight: 600;
@@ -220,10 +221,3 @@ input:focus, textarea:focus {
   color: var(--primary-700);
 }
 
-/* Footer */
-.footer {
-  margin-top: 22px;
-  text-align: center;
-  color: var(--muted);
-  font-size: 0.9rem;
-}
