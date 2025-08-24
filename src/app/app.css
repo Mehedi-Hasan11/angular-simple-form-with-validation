@@ -150,7 +150,7 @@ input:focus, textarea:focus {
 }
 
 /* Buttons */
-.actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.actions { display: flex; gap: 10px; flex-wrap: wrap;justify-content: center; }
 .btn {
   border: none;
   padding: 10px 14px;
@@ -160,8 +160,8 @@ input:focus, textarea:focus {
   transition: transform 0.05s ease, box-shadow 0.2s ease, opacity 0.2s ease;
   box-shadow: var(--shadow);
 }
-.btn:disabled { opacity: 0.6; cursor: not-allowed; box-shadow: none; }
-.btn:hover:not(:disabled) { transform: translateY(-1px); }
+/* .btn:disabled { opacity: 0.6; cursor: not-allowed; box-shadow: none; }
+.btn:hover:not(:disabled) { transform: translateY(-1px); } */
 
 .primary { background: var(--primary); color: white; }
 .primary:hover { background: var(--primary-600); }
