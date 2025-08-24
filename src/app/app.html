@@ -1,3 +1,209 @@
-<app-employee-bio></app-employee-bio>
+<header class="header">
+    <h1>Employee Biodata Form</h1>
+    
+  </header>
 
-<router-outlet />
+  <main class="grid">
+    <!--FORM CARD -->
+    <section class="card">
+      <h2 class="card-title">Employee Biodata Form</h2>
+
+      <form [formGroup]="form" class="form" novalidate>
+        <div class="form-grid">
+          <!-- Name -->
+          <div class="field">
+            <label>Name <span class="req">*</span></label>
+            <input type="text" formControlName="name" placeholder="Enter full name" />
+            <div class="error" *ngIf="f['name'].touched && f['name'].invalid">
+              Name is required.
+            </div>
+          </div>
+
+          <!-- Phone -->
+          <div class="field">
+            <label>Phone <span class="req">*</span></label>
+            <input type="tel" formControlName="phone" placeholder="10–15 digits" />
+            <div class="error" *ngIf="f['phone'].touched && f['phone'].invalid">
+                <span *ngIf="f['phone'].errors?.['required']">Phone is required.</span>
+                <span *ngIf="f['phone'].errors?.['pattern']">Phone must be 10–15 digits.</span>
+            </div>
+          </div>
+
+          <!-- Email -->
+          <div class="field">
+            <label>Email</label>
+            <input type="email" formControlName="email" placeholder="name@example.com" />
+            <div class="error" *ngIf="f['email'].touched && f['email'].invalid">
+                Enter a valid email.
+            </div>
+          </div>
+
+          <!-- NID -->
+          <div class="field">
+            <label>NID Number <span class="req">*</span></label>
+            <input type="text" formControlName="nid" placeholder="Enter NID number" />
+            <div class="error" *ngIf="f['nid'].touched && f['nid'].invalid">
+             NID is required.
+            </div>
+          </div>
+
+          <!-- DOB -->
+          <div class="field">
+            <label>Date of Birth <span class="req">*</span></label>
+            <input type="date" formControlName="dob" />
+            <div class="error" *ngIf="f['dob'].touched && f['dob'].invalid">
+  Date of Birth is required.
+            </div>
+          </div>
+
+          <!-- Present Address -->
+          <div class="field field-col-2">
+            <label>Present Address <span class="req">*</span></label>
+            <textarea formControlName="address" rows="2" placeholder="Street, City, Country"></textarea>
+            <div class="error" *ngIf="f['address'].touched && f['address'].invalid">
+            Address is required.
+            </div>
+          </div>
+
+          <!-- Last Qualification -->
+          <div class="field">
+            <label>Last Qualification <span class="req">*</span></label>
+            <input type="text" formControlName="qualification" placeholder="e.g., B.Sc. in CSE" />
+            <div class="error" *ngIf="f['qualification'].touched && f['qualification'].invalid">
+                 Last Qualification is required.
+                </div>
+          </div>
+
+          <!-- Religion -->
+          <div class="field">
+            <label>Religion</label>
+            <input type="text" formControlName="religion" placeholder="Optional" />
+          </div>
+
+          <!-- Experience -->
+          <div class="field">
+            <label>Experience (Years)</label>
+            <input type="number" formControlName="experience" min="0" step="1" />
+          </div>
+
+          <!-- Last Working Place -->
+          <div class="field">
+            <label>Last Working Place</label>
+            <input type="text" formControlName="lastWorkPlace" placeholder="Optional" />
+          </div>
+
+          <!-- Salary -->
+          <div class="field">
+            <label>Salary</label>
+            <input type="number" formControlName="salary" min="0" step="1" />
+          </div>
+
+          <!-- Photo Upload -->
+          <div class="field field-col-2">
+            <label>Upload Photo</label>
+            <div class="upload-row">
+              <input #photoInput type="file" accept="image/*" (change)="onPhotoSelected($event)" />
+              <button type="button" class="btn secondary" (click)="removePhoto()" *ngIf="photoPreview()">Remove Photo</button>
+            </div>
+            <div class="photo-preview" *ngIf="photoPreview(); else noPhoto">
+              <img [src]="photoPreview()!" alt="Preview" />
+            </div>
+            <ng-template #noPhoto>
+              <div class="photo-placeholder">No photo selected</div>
+            </ng-template>
+          </div>
+
+          <!-- Documents Upload -->
+          <div class="field field-col-2">
+            <label>Upload Documents</label>
+            <input #docsInput type="file" multiple (change)="onDocsSelected($event)" />
+            <ul class="doc-list" *ngIf="docs().length > 0">
+              <li *ngFor="let d of docs(); let i = index">
+                <span class="doc-name">{{ d.name }}</span>
+                <span class="doc-size">({{ formatBytes(d.size) }})</span>
+                <button type="button" class="icon-btn" (click)="removeDoc(i)" aria-label="Remove document">&times;</button>
+              </li>
+            </ul>
+            <div class="muted" *ngIf="docs().length === 0">No documents added</div>
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="actions">
+          <button
+            type="button"
+            class="btn primary"
+            (click)="addEmployee()"
+            [disabled]="form.invalid || isEditing()"
+            title="Add a new employee to dashboard"
+          >
+            Add Employee
+          </button>
+
+          <button
+            type="button"
+            class="btn accent"
+            (click)="updateEmployee()"
+            [disabled]="form.invalid || !isEditing()"
+            title="Update selected employee"
+          >
+            Update Employee
+          </button>
+
+          <button type="button" class="btn light" (click)="resetForm()" title="Reset the form">
+            Reset
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- ===================== DASHBOARD CARD ===================== -->
+    <section class="card">
+      <h2 class="card-title">Employees Dashboard</h2>
+
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Photo</th>
+              <th>Name</th>
+              <th>Phone</th>
+              <th>Email</th>
+              <th>NID</th>
+              <th>Date of Birth</th>
+              <th>Experience</th>
+              <th>Salary</th>
+              <th class="actions-col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let emp of employees(); let i = index">
+              <td>
+                <div class="avatar">
+                  <img *ngIf="emp.photoDataUrl" [src]="emp.photoDataUrl" alt="emp photo" />
+                  <div class="avatar-fallback" *ngIf="!emp.photoDataUrl">{{ initials(emp.name) }}</div>
+                </div>
+              </td>
+              <td>{{ emp.name }}</td>
+              <td>{{ emp.phone }}</td>
+              <td>{{ emp.email || '—' }}</td>
+              <td>{{ emp.nid }}</td>
+              <td>{{ emp.dob }}</td>
+              <td>{{ emp.experience }}</td>
+              <td>{{ emp.salary }}</td>
+              <td class="row-actions">
+                <button class="btn tiny" (click)="editEmployee(i)">Edit</button>
+                <button class="btn tiny danger" (click)="deleteEmployee(i)">Delete</button>
+              </td>
+            </tr>
+
+            <tr *ngIf="employees().length === 0">
+              <td colspan="9" class="empty">No employees added yet.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+
